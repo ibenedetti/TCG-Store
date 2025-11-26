@@ -1,0 +1,158 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"gametitle": {
+				"__TYPE__": "FieldContent",
+				"value": "attached",
+				"type": "Text"
+			},
+			"gamedescription": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Irure aliquip et id magna."
+						}
+					}
+				]
+			},
+			"gamenews": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"cardimg",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1586952518485-11b180e92764",
+										"width": 4172,
+										"height": 4000
+									},
+									"url": "https://images.unsplash.com/photo-1586952518485-11b180e92764",
+									"width": 4172,
+									"height": 4000,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"alt": "pond",
+									"credits": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"cardname",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "fought",
+									"type": "Text"
+								}
+							],
+							[
+								"flipselect",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "yes",
+									"type": "Select"
+								}
+							],
+							[
+								"flippedimg",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
+										"width": 3199,
+										"height": 3199
+									},
+									"url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
+									"width": 3199,
+									"height": 3199,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"alt": "moment",
+									"credits": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"flippedname",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "studied",
+									"type": "Text"
+								}
+							],
+							[
+								"foil",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "yes",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"newstitle": {
+				"__TYPE__": "FieldContent",
+				"value": "quickly",
+				"type": "Text"
+			},
+			"newsdescription": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Lorem incididunt minim labore qui reprehenderit dolore magna. Elit id occaecat nisi sunt tempor est duis amet enim officia et reprehenderit."
+						}
+					}
+				]
+			},
+			"gamebackground": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1560457079-9a6532ccb118",
+					"width": 4160,
+					"height": 3120
+				},
+				"url": "https://images.unsplash.com/photo-1560457079-9a6532ccb118",
+				"width": 4160,
+				"height": 3120,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"alt": "however",
+				"credits": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			}
+		},
+		"items": []
+	}
+]

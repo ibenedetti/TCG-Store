@@ -1,0 +1,120 @@
+{
+  "id": "game_intro",
+  "type": "SharedSlice",
+  "name": "GameIntro",
+  "description": "GameIntro",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "gamebackground": {
+          "type": "Image",
+          "config": {
+            "label": "GameBackground",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "gametitle": {
+          "type": "Text",
+          "config": {
+            "label": "GameTitle",
+            "placeholder": ""
+          }
+        },
+        "gamedescription": {
+          "type": "StructuredText",
+          "config": {
+            "label": "GameDescription",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,strong,em"
+          }
+        },
+        "newstitle": {
+          "type": "Text",
+          "config": {
+            "label": "Newstitle",
+            "placeholder": ""
+          }
+        },
+        "newsdescription": {
+          "type": "StructuredText",
+          "config": {
+            "label": "NewsDescription",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "gamenews": {
+          "type": "Group",
+          "config": {
+            "label": "GameNews",
+            "repeat": true,
+            "fields": {
+              "flipselect": {
+                "type": "Select",
+                "config": {
+                  "label": "Flipselect",
+                  "placeholder": "",
+                  "options": [
+                    "no",
+                    "yes"
+                  ]
+                }
+              },
+              "foil": {
+                "type": "Select",
+                "config": {
+                  "label": "Foil",
+                  "placeholder": "",
+                  "options": [
+                    "no",
+                    "yes"
+                  ]
+                }
+              },
+              "cardimg": {
+                "type": "Image",
+                "config": {
+                  "label": "CardImg",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              },
+              "cardname": {
+                "type": "Text",
+                "config": {
+                  "label": "CardName",
+                  "placeholder": ""
+                }
+              },
+              "flippedimg": {
+                "type": "Image",
+                "config": {
+                  "label": "FlippedImg",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              },
+              "flippedname": {
+                "type": "Text",
+                "config": {
+                  "label": "FlippedName",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

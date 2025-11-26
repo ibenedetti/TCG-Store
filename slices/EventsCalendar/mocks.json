@@ -1,0 +1,73 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"title": {
+				"__TYPE__": "FieldContent",
+				"value": "because",
+				"type": "Text"
+			},
+			"description": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Nostrud enim reprehenderit fugiat deserunt ex consequat non ea ad sunt enim aliqua occaecat ipsum reprehenderit. Tempor ad ad exercitation reprehenderit esse magna ea qui ad duis commodo officia aliqua occaecat. Do tempor sint elit cillum et sit laboris ut."
+						}
+					}
+				]
+			},
+			"events": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"eventdate",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Date",
+									"value": "2023-07-21"
+								}
+							],
+							[
+								"eventtitle",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "process",
+									"type": "Text"
+								}
+							],
+							[
+								"eventdescription",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Pariatur occaecat qui amet enim excepteur est sit fugiat nulla nisi ullamco ullamco ex id in. Qui cupidatat consequat esse esse est reprehenderit dolore ullamco sit cupidatat."
+											}
+										}
+									]
+								}
+							],
+							[
+								"eventtype",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Lanzamiento",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

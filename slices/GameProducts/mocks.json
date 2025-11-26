@@ -1,0 +1,84 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"producttitle": {
+				"__TYPE__": "FieldContent",
+				"value": "ahead",
+				"type": "Text"
+			},
+			"productdisplay": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"size",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "large",
+									"type": "Select"
+								}
+							],
+							[
+								"productlink",
+								{
+									"key": "857b5cc5-243d-47d5-bb3a-48379200b4bd",
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "http://google.com",
+										"text": "memory"
+									}
+								}
+							],
+							[
+								"description",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Lorem quis aliquip nulla duis duis do id cupidatat consequat cillum voluptate esse deserunt et. Duis nisi commodo duis magna esse sit id esse occaecat anim laboris sunt in officia. Adipisicing aliquip dolor nostrud consequat enim do sint consectetur Lorem qui."
+											}
+										}
+									]
+								}
+							],
+							[
+								"productimg",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5",
+										"width": 5848,
+										"height": 3899
+									},
+									"url": "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5",
+									"width": 5848,
+									"height": 3899,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"alt": "past",
+									"credits": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

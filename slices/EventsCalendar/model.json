@@ -1,0 +1,80 @@
+{
+  "id": "events_calendar",
+  "type": "SharedSlice",
+  "name": "EventsCalendar",
+  "description": "EventsCalendar",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,strong,em"
+          }
+        },
+        "events": {
+          "type": "Group",
+          "config": {
+            "label": "events",
+            "repeat": true,
+            "fields": {
+              "eventdate": {
+                "type": "Date",
+                "config": {
+                  "label": "EventDate",
+                  "placeholder": ""
+                }
+              },
+              "eventtitle": {
+                "type": "Text",
+                "config": {
+                  "label": "EventTitle",
+                  "placeholder": ""
+                }
+              },
+              "eventdescription": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Eventdescription",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+                }
+              },
+              "eventtype": {
+                "type": "Select",
+                "config": {
+                  "label": "EventType",
+                  "placeholder": "",
+                  "options": [
+                    "Torneo",
+                    "Preventa",
+                    "Lanzamiento",
+                    "Evento Especial"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

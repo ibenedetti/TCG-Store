@@ -1,0 +1,75 @@
+{
+  "id": "game_products",
+  "type": "SharedSlice",
+  "name": "GameProducts",
+  "description": "GameProducts",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "producttitle": {
+          "type": "Text",
+          "config": {
+            "label": "productTitle",
+            "placeholder": ""
+          }
+        },
+        "productdisplay": {
+          "type": "Group",
+          "config": {
+            "label": "ProductDisplay",
+            "repeat": true,
+            "fields": {
+              "size": {
+                "type": "Select",
+                "config": {
+                  "label": "size",
+                  "placeholder": "",
+                  "options": [
+                    "small",
+                    "medium",
+                    "large"
+                  ]
+                }
+              },
+              "productimg": {
+                "type": "Image",
+                "config": {
+                  "label": "ProductImg",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              },
+              "productlink": {
+                "type": "Link",
+                "config": {
+                  "label": "ProductLink",
+                  "placeholder": "",
+                  "select": null,
+                  "allowTargetBlank": true,
+                  "allowText": true,
+                  "repeat": false
+                }
+              },
+              "description": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "description",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "multi": "paragraph,strong,em"
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

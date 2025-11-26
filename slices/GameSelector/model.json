@@ -1,0 +1,59 @@
+{
+  "id": "game_selector",
+  "type": "SharedSlice",
+  "name": "GameSelector",
+  "description": "GameSelector",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "title",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,strong,em"
+          }
+        },
+        "games": {
+          "type": "Group",
+          "config": {
+            "label": "Games",
+            "repeat": true,
+            "fields": {
+              "cardback": {
+                "type": "Image",
+                "config": {
+                  "label": "CardBack",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              },
+              "gamename": {
+                "type": "Text",
+                "config": {
+                  "label": "GameName",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
