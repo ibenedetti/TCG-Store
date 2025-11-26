@@ -2,7 +2,7 @@
 import { PrismicRichText } from "@prismicio/react";
 import { asImageSrc } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import {FadeIn} from "@/components/FadeIn";
 
 /**
@@ -13,6 +13,9 @@ import {FadeIn} from "@/components/FadeIn";
 const GameIntro = ({ slice }) => {
   const [flippedCards, setFlippedCards] = useState({});
   const [activeCardIndex, setActiveCardIndex] = useState(null);
+  const [useGyroscope, setUseGyroscope] = useState(false);
+  const [gyroscopeData, setGyroscopeData] = useState({ percentX: 50, percentY: 50, bgX: 50, bgY: 50, rotX: 0, rotY: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   
   const [cardInteraction, setCardInteraction] = useState({
     rotX: 0,
@@ -28,10 +31,74 @@ const GameIntro = ({ slice }) => {
     return ((value - fromMin) / (fromMax - fromMin)) * (toMax - toMin) + toMin;
   }
 
+  function clamp(value, min = 0, max = 1) {
+    return Math.min(Math.max(value, min), max);
+  }
+
   const flipTimeoutRef = useRef(null);
 
+  useEffect(() => {
+    const checkMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+             ('ontouchstart' in window) || 
+             (navigator.maxTouchPoints > 0);
+    };
+    setIsMobile(checkMobile());
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const requestGyroscope = () => {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === 'granted') {
+              setUseGyroscope(true);
+            }
+          })
+          .catch(console.error);
+      } else if ('DeviceOrientationEvent' in window) {
+        setUseGyroscope(true);
+      }
+    };
+
+    document.body.addEventListener('click', requestGyroscope, { once: true });
+
+    return () => {
+      document.body.removeEventListener('click', requestGyroscope);
+    };
+  }, [isMobile]);
+
+  // Handle gyroscope data
+  useEffect(() => {
+    if (!useGyroscope) return;
+
+    const handleOrientation = (e) => {
+      const gamma = e.gamma;
+      const beta = e.beta;   
+      
+      const tiltX = clamp(gamma, -45, 45);
+      const tiltY = clamp(beta - 45, -45, 45);
+      
+      const percentX = adjust(tiltX, -45, 45, 0, 100);
+      const percentY = adjust(tiltY, -45, 45, 0, 100);
+      
+      const rotX = tiltY * 0.5;
+      const rotY = tiltX * 0.5;
+      
+      const bgX = adjust(percentX, 0, 100, 37, 63);
+      const bgY = adjust(percentY, 0, 100, 33, 67);
+
+      setGyroscopeData({ percentX, percentY, bgX, bgY, rotX, rotY });
+    };
+
+    window.addEventListener('deviceorientation', handleOrientation);
+    return () => window.removeEventListener('deviceorientation', handleOrientation);
+  }, [useGyroscope]);
 
   const handleMouseMove = useCallback((e, index) => {
+    if (isMobile) return; 
     if (activeCardIndex !== null && activeCardIndex !== index) return;
 
     const wrapper = e.currentTarget;
@@ -58,9 +125,41 @@ const GameIntro = ({ slice }) => {
       bgX,
       bgY,
     });
-  }, [activeCardIndex, flippedCards]);
+  }, [activeCardIndex, flippedCards, isMobile]);
+
+  const handleTouchMove = useCallback((e, index) => {
+    if (!isMobile) return;
+    
+    e.preventDefault();
+    const touch = e.touches[0];
+    const wrapper = e.currentTarget;
+    const rect = wrapper.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    const rotX = ((y / rect.height) - 0.5) * (flippedCards[index] ? 20 : -20);
+    const rotY = ((x / rect.width) - 0.5) * (flippedCards[index] ? -20 : 20);
+
+    const percentX = (x / rect.width) * 100;
+    const percentY = (y / rect.height) * 100;
+
+    const bgX = adjust(percentX, 0, 100, 37, 63);
+    const bgY = adjust(percentY, 0, 100, 33, 67);
+
+    setActiveCardIndex(index);
+    setCardInteraction({
+      rotX,
+      rotY,
+      percentX,
+      percentY,
+      opacity: 1,
+      bgX,
+      bgY,
+    });
+  }, [flippedCards, isMobile]);
 
   const handleMouseLeave = useCallback(() => {
+    if (isMobile) return; 
     if (flipTimeoutRef.current === null) {
       setActiveCardIndex(null);
       setCardInteraction({
@@ -73,7 +172,23 @@ const GameIntro = ({ slice }) => {
         bgY: 50,
       });
     }
-  }, []);
+  }, [isMobile]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isMobile) return;
+    if (flipTimeoutRef.current === null) {
+      setActiveCardIndex(null);
+      setCardInteraction({
+        rotX: 0,
+        rotY: 0,
+        percentX: 50,
+        percentY: 50,
+        opacity: 0,
+        bgX: 50,
+        bgY: 50,
+      });
+    }
+  }, [isMobile]);
 
   const handleCardClick = (index) => {
     const item = slice.primary.gamenews[index];
@@ -134,7 +249,7 @@ const GameIntro = ({ slice }) => {
           </h2>
 
           <div className="text-white text-center mb-8">
-            <PrismicRichText  className=" w-[30dvw] text-8xl" field={slice.primary.gamedescription} />
+            <PrismicRichText className="w-[30dvw] text-8xl" field={slice.primary.gamedescription} />
           </div>
         </FadeIn>
 
@@ -162,13 +277,22 @@ const GameIntro = ({ slice }) => {
               const backImage = isFlippable ? asImageSrc(item.flippedimg) : null;
 
               const isCardActive = activeCardIndex === index;
-              const currentInteraction = isCardActive ? cardInteraction : {};
               
-              const hoverTransform = `rotateX(${currentInteraction.rotX || 0}deg) rotateY(${currentInteraction.rotY || 0}deg) translateZ(${isCardActive ? 30 : 0}px)`;
+              // Only apply interaction data to the active card or when using gyroscope on mobile
+              let currentInteraction;
+              if (isCardActive) {
+                currentInteraction = cardInteraction;
+              } else if (useGyroscope && isMobile && activeCardIndex === null) {
+                currentInteraction = { ...gyroscopeData, opacity: 1 };
+              } else {
+                currentInteraction = { rotX: 0, rotY: 0, percentX: 50, percentY: 50, opacity: 0, bgX: 50, bgY: 50 };
+              }
+              
+              const hoverTransform = `rotateX(${currentInteraction.rotX || 0}deg) rotateY(${currentInteraction.rotY || 0}deg) translateZ(${isCardActive ? 30 : (useGyroscope && isMobile && activeCardIndex === null ? 30 : 0)}px)`;
               
               const finalTransform = isFlipped 
-  ? `rotateX(${-(currentInteraction.rotX || 0)}deg) rotateY(${180 - (currentInteraction.rotY || 0)}deg) translateZ(${isCardActive ? 30 : 0}px)`
-  : hoverTransform;
+                ? `rotateX(${-(currentInteraction.rotX || 0)}deg) rotateY(${180 - (currentInteraction.rotY || 0)}deg) translateZ(${isCardActive ? 30 : (useGyroscope && isMobile && activeCardIndex === null ? 30 : 0)}px)`
+                : hoverTransform;
 
               return (
                 <div
@@ -178,11 +302,14 @@ const GameIntro = ({ slice }) => {
                     width: '300px',
                     height: '420px',
                     perspective: '1200px',
-                    cursor: isFlippable ? 'pointer' : 'default' ,
-                    paddingBottom: '5vh'
+                    cursor: isFlippable ? 'pointer' : 'default',
+                    paddingBottom: '5vh',
+                    touchAction: 'none'
                   }}
                   onMouseMove={e => handleMouseMove(e, index)}
                   onMouseLeave={handleMouseLeave}
+                  onTouchMove={e => handleTouchMove(e, index)}
+                  onTouchEnd={handleTouchEnd}
                   onClick={() => handleCardClick(index)} 
                 >
                   <div
@@ -202,7 +329,7 @@ const GameIntro = ({ slice }) => {
                       style={{
                         position: 'absolute',
                         width: '100%',
-                        height: '100%',
+                        height: '120%',
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
                         backgroundImage: `url(${frontImage})`,
@@ -282,7 +409,7 @@ const GameIntro = ({ slice }) => {
                         style={{
                           position: 'absolute',
                           width: '100%',
-                          height: '100%',
+                          height: '120%',
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
                           backgroundImage: `url(${backImage})`,
