@@ -178,7 +178,8 @@ const GameIntro = ({ slice }) => {
                     width: '300px',
                     height: '420px',
                     perspective: '1200px',
-                    cursor: isFlippable ? 'pointer' : 'default' 
+                    cursor: isFlippable ? 'pointer' : 'default' ,
+                    paddingBottom: '5vh'
                   }}
                   onMouseMove={e => handleMouseMove(e, index)}
                   onMouseLeave={handleMouseLeave}
