@@ -1,68 +1,83 @@
 "use client"
 
-import { PrismicImage, PrismicText } from "@prismicio/react";
+import { PrismicText } from "@prismicio/react";
 import { PrismicNextLink } from "@prismicio/next";
 import { asImageSrc } from "@prismicio/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FadeIn } from "@/components/FadeIn";
 
 const GameSelector = ({ slice }) => {
+  const [shouldApplyTransform, setShouldApplyTransform] = useState(false);
 
-const routesByIndex = [
-  "/mtg-page",
-  "/pokemon-page",  
-  "/lorcana-page",  
-  "/yugioh-page"
-];
+  const routesByIndex = [
+    "/mtg-page",
+    "/pokemon-page",
+    "/lorcana-page",
+    "/yugioh-page"
+  ];
+  
+  const handleHover = (wrapper, x, y) => {
+    const card = wrapper.querySelector('.game-card');
+    const shine = wrapper.querySelector('.shine');
+    const rect = wrapper.getBoundingClientRect();
+
+    const percentX = (x / rect.width) * 100;
+    const percentY = (y / rect.height) * 100;
+
+    const shiftX = ((x / rect.width) - 0.5) * 10;
+    const shiftY = ((y / rect.height) - 0.5) * 10;
+
+    card.style.transform = `${card.dataset.baseTransform} translateX(${shiftX}px) translateY(${shiftY}px)`;
+    card.style.setProperty('--pointer-x', `${percentX}%`);
+    card.style.setProperty('--pointer-y', `${percentY}%`);
+    
+    if (shine) {
+      shine.style.opacity = '1';
+    }
+  };
+
+  const resetCard = (wrapper) => {
+    const card = wrapper.querySelector('.game-card');
+    const shine = wrapper.querySelector('.shine');
+    
+    const baseTransform = card.dataset.baseTransform || 'translateX(0) translateY(0)';
+    card.style.transform = baseTransform;
+    
+    if (shine) {
+      shine.style.opacity = '0';
+    }
+  };
+
   useEffect(() => {
+    setShouldApplyTransform(window.innerWidth >= 1024);
+    
+    const checkScreenSize = () => {
+      setShouldApplyTransform(window.innerWidth >= 1024);
+    };
+    
+    window.addEventListener('resize', checkScreenSize);
+
     const wrappers = document.querySelectorAll('.card-wrapper');
-
-    function handleHover(wrapper, x, y) {
-      const card = wrapper.querySelector('.game-card');
-      const shine = wrapper.querySelector('.shine');
-      const rect = wrapper.getBoundingClientRect();
-
-      const percentX = (x / rect.width) * 100;
-      const percentY = (y / rect.height) * 100;
-
-      const shiftX = ((x / rect.width) - 0.5) * 10;
-      const shiftY = ((y / rect.height) - 0.5) * 10;
-
-      card.style.transform = `translateX(${shiftX}px) translateY(${shiftY}px)`;
-      card.style.setProperty('--pointer-x', `${percentX}%`);
-      card.style.setProperty('--pointer-y', `${percentY}%`);
-      
-      if (shine) {
-        shine.style.opacity = '1';
-      }
-    }
-
-    function resetCard(wrapper) {
-      const card = wrapper.querySelector('.game-card');
-      const shine = wrapper.querySelector('.shine');
-      
-      const baseTransform = card.dataset.baseTransform || 'translateX(0) translateY(0)';
-      card.style.transform = baseTransform;
-      
-      if (shine) {
-        shine.style.opacity = '0';
-      }
-    }
 
     wrappers.forEach(wrapper => {
       wrapper.addEventListener('mousemove', e => {
         const rect = wrapper.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        handleHover(wrapper, x, y);
+        if (window.innerWidth >= 1024) {
+          handleHover(wrapper, x, y);
+        }
       });
 
       wrapper.addEventListener('mouseleave', () => {
-        resetCard(wrapper);
+        if (window.innerWidth >= 1024) {
+          resetCard(wrapper);
+        }
       });
     });
-
+    
     return () => {
+      window.removeEventListener('resize', checkScreenSize);
       wrappers.forEach(wrapper => {
         wrapper.replaceWith(wrapper.cloneNode(true));
       });
@@ -86,16 +101,14 @@ const routesByIndex = [
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <FadeIn className="flex flex-col justify-center items-center">
-        <h2 className="font-bold-slanted text-white mb-8 scroll-pt-6 text-6xl uppercase md:text-8xl text-center background-black text-pretty mt-4 text-center">
-          {slice.primary.title}
-        </h2>
-      </FadeIn>
-      
-      <h2 className="font-bold-slanted text-white mb-8 scroll-pt-6 text-6xl uppercase md:text-5xl text-center background-black text-pretty mt-4">
-        <PrismicText field={slice.primary.description} />
-      </h2>
-      
+      <div className="text-center mb-12">
+        <PrismicText field={slice.primary.heading} components={{
+          heading2: ({ children }) => <h2 className="text-4xl lg:text-5xl font-extrabold text-white mb-4 tracking-tighter">{children}</h2>,
+        }} />
+        <PrismicText field={slice.primary.body} components={{
+          paragraph: ({ children }) => <p className="text-lg text-gray-400 max-w-2xl mx-auto">{children}</p>,
+        }} />
+      </div>
       <FadeIn>
         <div className="selector-container 
                         grid grid-cols-2 gap-4 justify-items-center
@@ -105,25 +118,27 @@ const routesByIndex = [
           {slice.primary.games.map((item, index) => {
             const { rotation, yOffset } = getArchRotation(index, slice.primary.games.length);
             const backgroundUrl = asImageSrc(item.cardback);
+            const altText = item.cardback.alt || `Card for ${item.gamename || 'Trading Card Game'}`;
+            
+            const baseTransformStyle = `rotateZ(${rotation}deg) translateY(${yOffset}px)`;
             
             return (
                 <PrismicNextLink 
                   key={index} 
                   href={routesByIndex[index] || "/"} 
                   className="block w-full max-w-[180px] lg:max-w-none"
+                  aria-label={`Go to ${item.gamename || 'Game Page'}`} 
                 >
                 <div 
-                  className="card-wrapper 
-                             w-full aspect-[2/3]
-                             lg:w-[20vw] lg:h-[55vh] lg:aspect-auto"
+                  className="card-wrapper w-full aspect-[2/3] lg:w-[20vw] lg:h-[55vh] lg:aspect-auto"
                   style={{ perspective: '1200px' }}
                 >
                   <div 
                     className="game-card relative overflow-hidden rounded-xl transition-transform duration-150 ease-out w-full h-full"
-                    data-base-transform={`rotateZ(${rotation}deg) translateY(${yOffset}px)`}
+                    data-base-transform={shouldApplyTransform ? baseTransformStyle : 'translateX(0) translateY(0)'}
                     style={{
-                      transform: window.innerWidth >= 1024 
-                        ? `rotateZ(${rotation}deg) translateY(${yOffset}px)` 
+                      transform: shouldApplyTransform 
+                        ? baseTransformStyle 
                         : 'none',
                       backgroundImage: `url(${backgroundUrl})`,
                       backgroundSize: 'cover',
@@ -132,6 +147,11 @@ const routesByIndex = [
                       boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
                     }}
                   >
+                        <img 
+                            src={backgroundUrl} 
+                            alt={altText}
+                            className="hidden"
+                        />
                     <div 
                       className="shine absolute inset-0 pointer-events-none transition-opacity duration-200"
                       style={{
@@ -142,11 +162,11 @@ const routesByIndex = [
                     />
                   </div>
                 </div>
-                {item.gamename && (
-                  <div className="text-center mt-2 text-white text-sm lg:text-base">
-                    {item.gamename}
-                  </div>
-                )}
+                <div className="mt-4 text-center">
+                  <PrismicText field={item.gamename} components={{
+                    heading3: ({ children }) => <h3 className="text-xl font-bold text-white transition-colors duration-300 group-hover:text-amber-400">{children}</h3>,
+                  }} />
+                </div>
               </PrismicNextLink>
             );
           })}
