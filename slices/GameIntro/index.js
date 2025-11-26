@@ -278,7 +278,6 @@ const GameIntro = ({ slice }) => {
 
               const isCardActive = activeCardIndex === index;
               
-              // Only apply interaction data to the active card or when using gyroscope on mobile
               let currentInteraction;
               if (isCardActive) {
                 currentInteraction = cardInteraction;
@@ -300,11 +299,12 @@ const GameIntro = ({ slice }) => {
                   className="card-wrapper sm:mb-6"
                   style={{
                     width: '300px',
-                    height: '420px',
+                    height: '504px',
                     perspective: '1200px',
                     cursor: isFlippable ? 'pointer' : 'default',
-                    paddingBottom: '5vh',
+                    paddingBottom: '5vh!important',
                     touchAction: 'none'
+                    
                   }}
                   onMouseMove={e => handleMouseMove(e, index)}
                   onMouseLeave={handleMouseLeave}
@@ -329,7 +329,7 @@ const GameIntro = ({ slice }) => {
                       style={{
                         position: 'absolute',
                         width: '100%',
-                        height: '120%',
+                        height: '100%',
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
                         backgroundImage: `url(${frontImage})`,
@@ -409,7 +409,7 @@ const GameIntro = ({ slice }) => {
                         style={{
                           position: 'absolute',
                           width: '100%',
-                          height: '120%',
+                          height: '100%',
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
                           backgroundImage: `url(${backImage})`,
