@@ -101,6 +101,21 @@ const GameSelector = ({ slice }) => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
+        <FadeIn>
+
+        <h2 className="font-bold-slanted text-white mb-8 scroll-pt-6 text-6xl uppercase md:text-8xl text-center background-black text-pretty mt-4">
+
+          {slice.primary.title}
+
+        </h2>
+
+          <h2 className="font-bold-slanted text-white mb-8 scroll-pt-6 text-6xl uppercase md:text-5xl text-center background-black text-pretty mt-4">
+
+        <PrismicText field={slice.primary.description} />
+
+      </h2>
+
+      </FadeIn>
       <div className="text-center mb-12">
         <PrismicText field={slice.primary.heading} components={{
           heading2: ({ children }) => <h2 className="text-4xl lg:text-5xl font-extrabold text-white mb-4 tracking-tighter">{children}</h2>,
