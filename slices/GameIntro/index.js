@@ -413,7 +413,7 @@ const GameIntro = ({ slice }) => {
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
                           backgroundImage: `url(${backImage})`,
-                          backgroundSize: 'cover',
+                          backgroundSize: '100% 100%',
                           backgroundPosition: 'center',
                           borderRadius: '12px',
                           boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
